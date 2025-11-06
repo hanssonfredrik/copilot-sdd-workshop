@@ -1,0 +1,27 @@
+
+name: Bug report
+description: Report a production issue
+labels: ["bug","production"]
+body:
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: prod/staging/dev
+      placeholder: prod
+    validations:
+      required: true
+  - type: input
+    id: release
+    attributes:
+      label: Release or SHA
+      description: Link to release tag or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Customer impact
+      placeholder: What happened and how many users?
+    validations:
+      required: true

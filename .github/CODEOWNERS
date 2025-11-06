@@ -1,0 +1,4 @@
+
+# Require reviews from leads for critical areas
+/src/Customers.Api/*  @your-org/tech-leads
+/tests/*               @your-org/qa-leads

@@ -1,0 +1,49 @@
+
+name: tests
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore -c Release
+      - name: Test with coverage
+        run: dotnet test --no-build -c Release --collect:"XPlat Code Coverage"
+      - name: Report coverage summary
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: $(find . -type f -name 'coverage.cobertura.xml' | head -n 1)
+          badge: true
+          fail_below_min: false
+      - name: Add summary to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const core = require('@actions/core');
+            function findFile(dir, name){
+              const { execSync } = require('child_process');
+              try {
+                return execSync(`bash -lc "find ${dir} -type f -name ${name} | head -n 1"`).toString().trim();
+              } catch { return ''; }
+            }
+            const file = findFile('.', 'code-coverage-results.md');
+            if (file) {
+              const md = fs.readFileSync(file, 'utf8');
+              await core.summary.addHeading('Test Coverage').addRaw(md).write();
+            }
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: '**/coverage.cobertura.xml'
