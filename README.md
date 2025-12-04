@@ -8,6 +8,7 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
 - .NET 9 SDK
 - Docker Desktop: https://www.docker.com/products/docker-desktop/
 - Git
+- [uv](https://docs.astral.sh/uv/) for package management (required for Spec Kit)
 
 ## Setup & Run
 
@@ -47,3 +48,29 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
 ```bash
 docker-compose down
 ```
+
+## Spec-Driven Development with Spec Kit
+
+This project is set up for Spec-Driven Development using [Spec Kit](https://github.com/github/spec-kit). To get started:
+
+### Install Spec Kit
+
+Install the Specify CLI tool globally using uv:
+
+```bash
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+```
+
+Then initialize Spec Kit in this project (if not already initialized):
+
+```bash
+specify init --here --ai copilot --script ps
+```
+
+### Learn More
+
+For detailed instructions on using Spec Kit and the Spec-Driven Development methodology, visit:
+- **[Spec Kit Documentation](https://github.com/github/spec-kit)**
+- **[Complete Spec-Driven Development Methodology](https://github.com/github/spec-kit/blob/main/spec-driven.md)**
+
+Available slash commands: `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, and more.
