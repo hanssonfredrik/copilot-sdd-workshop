@@ -8,7 +8,7 @@ public static class Seed
 {
     public static async Task ApplyAsync(AppDbContext db, CancellationToken ct = default)
     {
-        await db.Database.MigrateAsync(ct);
+        await db.Database.EnsureCreatedAsync(ct);
         if (!await db.Customers.AnyAsync(ct))
         {
             db.Customers.AddRange(new[] {

@@ -22,24 +22,15 @@ A simple REST API for managing customers built with .NET 8 and Entity Framework 
    docker-compose up -d
    ```
 
-3. **Install Entity Framework tools** (first time only)
-   ```bash
-   dotnet tool install --global dotnet-ef
-   ```
-
-4. **Create and apply database migration**
+3. **Run the API**
    ```bash
    cd src/Customers.Api
-   dotnet ef migrations add InitialCreate
-   dotnet ef database update
-   ```
-
-5. **Run the API**
-   ```bash
    dotnet run
    ```
+   
+   The database schema will be automatically created on first run.
 
-6. **Access the API**
+4. **Access the API**
    - API: http://localhost:5000
    - Swagger UI: http://localhost:5000/swagger
 
