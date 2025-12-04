@@ -14,7 +14,7 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
 
 1. **Clone and navigate to the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/hanssonfredrik/copilot-sdd-workshop.git
    cd copilot-sdd-workshop
    ```
 
