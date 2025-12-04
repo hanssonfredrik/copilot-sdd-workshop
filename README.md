@@ -8,7 +8,7 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
 - .NET 9 SDK
 - Docker Desktop: https://www.docker.com/products/docker-desktop/
 - Git
-- [uv](https://docs.astral.sh/uv/) for package management (required for Spec Kit)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) for package management (required for Spec Kit)
 
 ## Setup & Run
 
@@ -18,12 +18,17 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
    cd copilot-sdd-workshop
    ```
 
-2. **Start the database**
+2. **Install the Specify CLI tool globally using uv**
+   ```bash
+   uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+   ```
+
+3. **Start the database**
    ```bash
    docker-compose up -d
    ```
 
-3. **Run the API**
+4. **Run the API**
    ```bash
    cd src/Customers.Api
    dotnet run
@@ -31,7 +36,7 @@ A simple REST API for managing customers built with .NET 9 and Entity Framework 
    
    The database schema will be automatically created on first run.
 
-4. **Access the API**
+5. **Access the API**
    - API: http://localhost:5000
    - Swagger UI: http://localhost:5000/swagger
 
