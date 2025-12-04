@@ -1,12 +1,12 @@
 
-# Customers API - .NET 8 Minimal API
+# Customers API - .NET 9 Minimal API
 
-A simple REST API for managing customers built with .NET 8 and Entity Framework Core.
+A simple REST API for managing customers built with .NET 9 and Entity Framework Core.
 
 ## Prerequisites
 
-- .NET 8 SDK
-- Docker Desktop
+- .NET 9 SDK
+- Docker Desktop: https://www.docker.com/products/docker-desktop/
 - Git
 
 ## Setup & Run
