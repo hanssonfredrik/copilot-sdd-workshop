@@ -1,0 +1,142 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialog {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 90%;
+  animation: slideIn 0.2s ease-out;
+  outline: none;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header.danger {
+  border-left: 4px solid #dc3545;
+}
+
+.header.warning {
+  border-left: 4px solid #ffc107;
+}
+
+.header.info {
+  border-left: 4px solid #0066cc;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.body {
+  padding: 1.5rem;
+}
+
+.message {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cancelButton {
+  padding: 0.625rem 1.25rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.confirmButton {
+  padding: 0.625rem 1.25rem;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.dangerButton {
+  background-color: #dc3545;
+}
+
+.dangerButton:hover {
+  background-color: #c82333;
+}
+
+.warningButton {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.warningButton:hover {
+  background-color: #e0a800;
+}
+
+.infoButton {
+  background-color: #0066cc;
+}
+
+.infoButton:hover {
+  background-color: #0052a3;
+}
+
+.cancelButton:focus,
+.confirmButton:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}

@@ -1,0 +1,9 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 2rem 0;
+  color: #333;
+}

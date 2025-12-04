@@ -2,6 +2,7 @@
 using Customers.Api.Data;
 using Customers.Api.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Customers.Api.Endpoints;
@@ -22,9 +23,12 @@ public static class CustomersEndpoints
         return app;
     }
 
-    public static async Task<Ok<object>> GetCustomers(AppDbContext db, int page = 1, int pageSize = 10, string? city = null, DateTime? from = null, DateTime? to = null)
+    public static async Task<Ok<object>> GetCustomers(AppDbContext db, int page = 1, int pageSize = 50, string? name = null, string? email = null, string? phone = null, string? city = null, DateTime? from = null, DateTime? to = null)
     {
         var query = db.Customers.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(name)) query = query.Where(c => c.Name.Contains(name));
+        if (!string.IsNullOrWhiteSpace(email)) query = query.Where(c => c.Email.Contains(email));
+        if (!string.IsNullOrWhiteSpace(phone)) query = query.Where(c => c.Phone.Contains(phone));
         if (!string.IsNullOrWhiteSpace(city)) query = query.Where(c => c.City == city);
         if (from is not null) query = query.Where(c => c.SignupDate >= from);
         if (to is not null) query = query.Where(c => c.SignupDate <= to);
@@ -34,7 +38,6 @@ public static class CustomersEndpoints
             .OrderByDescending(c => c.SignupDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new { c.Id, c.Name, c.City, c.SignupDate })
             .ToListAsync();
 
         return TypedResults.Ok((object)new { total, page, pageSize, items });
@@ -46,19 +49,50 @@ public static class CustomersEndpoints
         return entity is null ? TypedResults.NotFound() : TypedResults.Ok(entity);
     }
 
-    public static async Task<Created<Customer>> Create(AppDbContext db, Customer input)
+    public static async Task<Results<Created<Customer>, BadRequest<ProblemDetails>, Conflict<ProblemDetails>>> Create(AppDbContext db, Customer input)
     {
+        // Check for duplicate email
+        if (await db.Customers.AnyAsync(c => c.Email == input.Email))
+        {
+            return TypedResults.Conflict(new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7807",
+                Title = "Email address already exists.",
+                Status = StatusCodes.Status409Conflict,
+                Detail = $"A customer with email '{input.Email}' already exists in the system."
+            });
+        }
+
         db.Customers.Add(input);
         await db.SaveChangesAsync();
         return TypedResults.Created($"/customers/{input.Id}", input);
     }
 
-    public static async Task<Results<NoContent, NotFound>> Update(AppDbContext db, int id, Customer update)
+    public static async Task<Results<NoContent, NotFound, Conflict<ProblemDetails>>> Update(AppDbContext db, int id, Customer update)
     {
         var entity = await db.Customers.FindAsync(id);
         if (entity is null) return TypedResults.NotFound();
+
+        // Check for duplicate email (excluding current customer)
+        if (await db.Customers.AnyAsync(c => c.Email == update.Email && c.Id != id))
+        {
+            return TypedResults.Conflict(new ProblemDetails
+            {
+                Type = "https://tools.ietf.org/html/rfc7807",
+                Title = "Email address already exists.",
+                Status = StatusCodes.Status409Conflict,
+                Detail = $"A customer with email '{update.Email}' already exists in the system."
+            });
+        }
+
         entity.Name = update.Name;
+        entity.Email = update.Email;
+        entity.Phone = update.Phone;
+        entity.Street = update.Street;
         entity.City = update.City;
+        entity.State = update.State;
+        entity.PostalCode = update.PostalCode;
+        entity.Country = update.Country;
         entity.SignupDate = update.SignupDate;
         await db.SaveChangesAsync();
         return TypedResults.NoContent();
